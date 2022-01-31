@@ -1,10 +1,15 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const generateHtml = require('./src/generateHtml');
+const Manager = require('./lib/Manager');
+const Engineer = require('./lib/Engineer');
+const Intern = require('./lib/Intern');
 
 let team = [];
 
 function writeToFile() {
+    console.log(team);
+    
     let fileName = "team.html";
     fs.writeFile(`./dist/${fileName}`, generateHtml(team), (err) =>
         err ? console.log(err) : console.log("Data written to HTML file."));
@@ -48,7 +53,8 @@ function startApp() {
                 message: "Please enter the team manager's office number: "
             }
         ])
-        .then((response) => {
+        .then((res) => {
+            team.push(new Manager(res.managerName, res.managerId, res.managerEmail, res.officeNumber));
             showMenu();
         });
 }
@@ -113,7 +119,8 @@ function addEngineer() {
                 message: "Please enter the engineer's GitHub username: "
             }
         ])
-        .then((response) => {
+        .then((res) => {
+            team.push(new Engineer(res.engineerName, res.engineerId, res.engineerEmail, res.github));
             // return to menu
             showMenu();
         });
@@ -155,7 +162,8 @@ function addIntern() {
                 message: "Please enter the intern's school: "
             }
         ])
-        .then((response) => {
+        .then((res) => {
+            team.push(new Intern(res.internName, res.internId, res.internEmail, res.school));
             // return to menu
             showMenu();
         });
