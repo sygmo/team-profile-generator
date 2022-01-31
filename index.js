@@ -2,6 +2,14 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const generateHtml = require('./src/generateHtml');
 
+let team = [];
+
+function writeToFile() {
+    let fileName = "team.html";
+    fs.writeFile(`./dist/${fileName}`, generateHtml(team), (err) =>
+        err ? console.log(err) : console.log("Data written to HTML file."));
+}
+
 function startApp() {
     console.log("Welcome to the Team Profile Generator!");
 
@@ -58,9 +66,9 @@ function showMenu() {
         ])
         .then((response) => {
             if (response.menu === "Finish building my team") {
-                // exit app
+                // exits the app, and the HTML is generated
                 console.log("Thank you for using the generator!");
-                return;
+                writeToFile();
             } else if (response.menu === "Add an engineer") {
                 addEngineer();
             } else {
@@ -152,9 +160,6 @@ function addIntern() {
             showMenu();
         });
 }
-
-// WHEN I decide to finish building my team
-// THEN I exit the application, and the HTML is generated
 
 // Start app
 startApp();
